@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  app:
+    container_name: 'appbe'
+    build: .
+    volumes: 
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - 7314:7314
+    stdin_open: true
+    environment:
+      - PORT=7314
+    command: npm start
+    labels:
+      - traefik.frontend.rule=Host:beitrack.local.dev
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.docker.network=traefik_default
+    networks:
+      - traefik_default
+volumes:
+  node_modules:
+networks:
+  traefik_default: 
+    external: true
